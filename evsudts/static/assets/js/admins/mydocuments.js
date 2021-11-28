@@ -627,7 +627,7 @@ var mydocs = Vue.createApp({
                           //  console.log(response.data)
                            $("#myModal").modal('hide');
 
-         
+                           mydocs.status = "Upload Document"
                          
                            swal(response.data.message, 'Clicked the OK to continue', "success");
                          
@@ -694,7 +694,7 @@ var mydocs = Vue.createApp({
                            $("#sendDoc").modal('hide');
 
          
-                         
+                           mydocs.statusSend = "Send Document"
                            swal("Send successfully", 'Clicked the OK to continue', "success");
                          
 

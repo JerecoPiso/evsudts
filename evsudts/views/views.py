@@ -54,7 +54,7 @@ def searchDocumentUsingTrace(request):
 def index(request):
     # dept = Department(department="Engineering Department")
     # dept.save()
-    request.session['title'] = 'Index'
+    request.session['title'] = 'Login'
     if request.session.get("user_loggin"):
         if request.session.get("user_role") == "User":
         
@@ -73,6 +73,7 @@ def index(request):
         return render(request, 'html/index.html')
 
 def signup(request):
+    request.session['title'] = 'Signup'
     if request.session.get("user_loggin"):
         return redirect("/user/")
     else:

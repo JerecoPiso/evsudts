@@ -705,8 +705,10 @@ def renameDoc(request):
             doc = Documents.objects.get(id=request.POST['id'])
             ext = os.path.splitext(doc.document.name)[1]
             
-            current_name = os.path.join(Path(__file__).resolve().parent.parent.parent, 'media\\'+str(doc.document.name))
-            new_name = os.path.join(Path(__file__).resolve().parent.parent.parent, 'media\\'+request.POST['docname']+"_"+str(doc.trace_id)+ext)
+            current_name = os.path.join(settings.MEDIA_ROOT, str(doc.document.name))
+            # current_name = os.path.join(Path(__file__).resolve().parent.parent.parent, 'media\\'+str(doc.document.name))
+            new_name = os.path.join(settings.MEDIA_ROOT, request.POST['docname']+"_"+str(doc.trace_id)+ext)
+            # os.path.join(Path(__file__).resolve().parent.parent.parent, 'media\\'+request.POST['docname']+"_"+str(doc.trace_id)+ext)
             os.rename(current_name,new_name)
             doc.document = request.POST['docname']+"_"+str(doc.trace_id)+ext
             if doc.uploader_id == request.session.get("id"):

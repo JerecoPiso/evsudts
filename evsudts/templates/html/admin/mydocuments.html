@@ -6,7 +6,7 @@
   
 <div class="container height-100 pt-3" id="mydocs">
     <h4 class="pl-3 page-title"> <span class="fa fa-folder-open"></span> My Documents  <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
-    <button class="btn btn-primary mt-2 mb-3" @click="getPendingSharedDocs()"><span class="	fa fa-share-square"></span> Pending Shared Documents</button>    
+    <button class="btn btn-primary mt-2 mb-3" @click="getPendingSharedDocs()"><span class=" fa fa-share-square"></span> Pending Shared Documents</button>    
    
     <h3 class="table-title"> <span class="blue fa fa-briefcase"></span>  All Documents</h3>
         <div class="bg-white p-4 b box-shadow">
@@ -50,13 +50,13 @@
                 </table>
                 <p v-if="documents.length == 0" class="text-center alert">No Data Available</p>
                 <b class="show-entries">Show</b>
-					<select v-model="docsToShowCtr"  class="totalToShow">
-						<option v-for="toShow in limitToShow"  :value="toShow">[toShow]</option>
-						
-					</select>
-					<b class="entries">Entries 
-					
-				</b> <br><br>
+                    <select v-model="docsToShowCtr"  class="totalToShow">
+                        <option v-for="toShow in limitToShow"  :value="toShow">[toShow]</option>
+                        
+                    </select>
+                    <b class="entries">Entries 
+                    
+                </b> <br><br>
             </div>
         </div>
         
@@ -300,7 +300,7 @@
 
                         
                             <div class="d-grid mt-2">
-                                <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                                <button type="submit" class="btn-add btn btn-primary p-2">[status]</button>
                             </div>
                             
                         </form>
@@ -595,7 +595,7 @@
         
                                         
                                             <div class="d-grid mt-2">
-                                                <button type="submit" class="btn-add btn btn-primary p-2">Send</button>
+                                                <button type="submit" class="btn-add btn btn-primary p-2">[statusSend]</button>
                                             </div>
                                             
                                         </form>

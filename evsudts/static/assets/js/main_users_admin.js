@@ -109,3 +109,19 @@
     linkColor.forEach(l=> l.addEventListener('click', colorLink))
     
     // Your code to run since DOM is loaded and ready
+    // Your code to run since DOM is loaded and ready
+    document.onreadystatechange = function() {
+    
+        if (document.readyState !== "complete") {
+            document.querySelector(
+              "body").style.display = "none";
+            document.querySelector(
+              ".spinner1").style.display = "block";
+        
+        } else {
+            document.querySelector(
+              ".spinner1").style.display = "none";
+            document.querySelector(
+              "body").style.display = "block";
+        }
+      };

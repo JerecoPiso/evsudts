@@ -331,3 +331,29 @@ a {
         padding-left: calc(var(--nav-width) + 188px)
     }
 }
+.center {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+} 
+.spinner1{
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    padding-top: 20%;
+    background-color: rgb(204, 0, 0);;
+}
+#loader {
+    border: 12px solid #f3f3f3;
+    border-radius: 50%;
+    /* box-shadow: 1px 2px white; */
+    border-top: 12px solid rgb(204, 0, 0);;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+}

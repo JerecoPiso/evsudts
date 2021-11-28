@@ -28,7 +28,8 @@ var docs = Vue.createApp({
             newFilename: '',
             newFilenameId: '',
             toRejectDocId: '',
-            toDeleteReceivedDocId: ''
+            toDeleteReceivedDocId: '',
+            status: 'Upload Document'
         }
     },
     mounted(){
@@ -237,7 +238,9 @@ var docs = Vue.createApp({
                 axios.post('/user/uploaddoc', data,
                       {
                           headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },  
-                        
+                          progress:( progressEvent ) => {
+                            docs.status = "Uploading ( "+ Math.round( (progressEvent.loaded * 100) / progressEvent.total ).toString() +"% )"
+                          }
                       }
                         ).then(function(response){
                           if(response.data.message == "Success"){

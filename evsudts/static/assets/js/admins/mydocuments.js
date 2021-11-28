@@ -30,13 +30,15 @@ var mydocs = Vue.createApp({
            toRejectDocId: '',
            doctypes: [],
            newFilename: '',
-           newFilenameId: ''
+           newFilenameId: '',
+           status: 'Upload Document',
+           statusSend: 'Send Document'
           
          }
 
      },
      mounted: function () {
-       setInterval(time, 1000)	
+       setInterval(time, 1000)  
        // time()
          this.getDocs()
          this.getUsers()
@@ -616,7 +618,9 @@ var mydocs = Vue.createApp({
                axios.post('/user/uploaddoc', data,
                      {
                          headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },  
-                       
+                         progress:( progressEvent ) => {
+                          mydocs.status = "Uploading ( "+ Math.round( (progressEvent.loaded * 100) / progressEvent.total ).toString() +"% )"
+                        }
                      }
                        ).then(function(response){
                          if(response.data.message == "Success"){
@@ -680,7 +684,9 @@ var mydocs = Vue.createApp({
                axios.post('/user/senddoc', data,
                      {
                          headers: { 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },  
-                       
+                         progress:( progressEvent ) => {
+                          mydocs.statusSend = "Uploading ( "+ Math.round( (progressEvent.loaded * 100) / progressEvent.total ).toString() +"% )"
+                        }
                      }
                        ).then(function(response){
                          if(response.data == "Success"){

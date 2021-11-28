@@ -42,11 +42,11 @@ class Documents(models.Model):
             super().delete(*args,**kwargs)
 
 
-class Department(models.Model):
-        department = models.CharField(max_length=255)
+# class Department(models.Model):
+#         department = models.CharField(max_length=255)
 
-        def __str__(self):
-            return self.department
+#         def __str__(self):
+#             return self.department
 
 class SharedFile(models.Model):
         file_id = models.IntegerField()

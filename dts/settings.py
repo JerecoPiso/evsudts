@@ -38,7 +38,7 @@ else:
      DEBUG = True
 
 
-ALLOWED_HOSTS = ["dts.herokuapp.com"]
+ALLOWED_HOSTS = ["evsudts.herokuapp.com"]
 # Application definition
 
 INSTALLED_APPS = [

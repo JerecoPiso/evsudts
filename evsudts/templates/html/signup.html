@@ -1,0 +1,67 @@
+{% extends 'html/templates/base.html' %}
+
+{% block login_signup %}
+
+
+        <template id="signup-form">
+            <form @submit.prevent="signup()" id=signup>
+
+                <img src="/media/user.jpg" class="logo" alt="user">
+                {% csrf_token %}
+                <!-- <div v-if="responseClass == 'error' " :class="responseClass">
+                    [responseInfo]
+                    <span class="x" @click="remove()">&times;</span>
+                </div>
+                <div v-if="responseClass == 'success' "  :class="responseClass">
+                    [responseInfo]
+                    <span class="x" @click="remove()">&times;</span>
+                </div> -->
+                <label for="">Username</label>
+                <div class="form-input">
+                    <span><i class="fa fa-user"></i></span>
+                    <input type="text" v-model="signupInfo.username" placeholder="Enter username . . ." required >
+                    <p class="tooltiptext" v-if="signupError.unameErr">
+                     
+                        [signupError.unameErr]
+                    </p>
+                </div>
+                <label for="">Password</label>
+                <div class="form-input">
+                    <span><i class="fa fa-lock"></i></span>
+                    <input type="password" v-model="signupInfo.password" placeholder="Enter password . . ." required >
+                    <p class="tooltiptext" v-if="signupError.passErr">
+                        [signupError.passErr]
+                    </p>
+                </div>
+                <label for="">Re-type Password</label>
+                <div class="form-input">
+                    <span><i class="fa fa-lock"></i></span>
+                    <input type="password" v-model="signupInfo.password2" required  placeholder="Re-type password . . ." >
+                </div>
+                <label for="">Department</label>
+                <div class="form-input">
+                    <span><i class="fa fa-bookmark"></i></span>
+                    <select v-model="signupInfo.dept" required>
+    
+                        <option v-for="dept in departments" :value="dept.department">[dept.department]</option>
+                    </select>
+                    <p class="tooltiptext" v-if="signupError.deptErr">
+                        [signupError.deptErr]
+                    </p>
+                </div>
+                <label for="">Recovery Hint</label>
+                <div class="form-input">
+                    <span><i class="fa fa-question"></i></span>
+                    <input type="text" v-model="signupInfo.hint"  placeholder="Enter hint  . . ." required>
+                    <p class="tooltiptext" v-if="signupError.hintErr">
+                        [signupError.hintErr]
+                    </p>
+                </div>
+               
+                <button type="submit" class="signup">Sign Up</button>
+                
+                <a href="/" class="already-have-acc" @click="showLogin = true">Already have an account?</button>
+            </form>
+        </template>
+           
+{% endblock %}

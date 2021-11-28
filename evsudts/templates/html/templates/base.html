@@ -1,0 +1,24 @@
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fontawesome/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/boxicons/css/boxicons.css' %}">
+    
+</head>
+<body>
+       {% block login_signup %}
+
+       {% endblock %}
+
+<script src="{% static 'assets/js/vue.js' %}"></script>
+
+<script src="{% static 'assets/js/axios.js' %}"></script>
+<script src="{% static 'assets/js/sweetalert.js' %}"></script>
+<script src="{% static 'assets/js/loginsignup.js' %}"></script>
+</body>
+</html>

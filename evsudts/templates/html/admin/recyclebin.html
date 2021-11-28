@@ -1,0 +1,158 @@
+{% extends 'html/templates/admin_base.html' %}
+
+{% block admin %}
+   
+{% include 'html/admin/sidenav.html' %}
+<!--Container Main start-->
+<div class="height-100  pt-3 pl-1 pr-1 " id="recyclebin" >
+       {% csrf_token %}
+        <div class="container">
+            <!-- <h4 class="pl-3 page-title">  | <span class="fa fa-trash"></span> Recycle Bin |</h4> -->
+            <h4 class="pl-3 page-title"> <span class="fa fa-trash"></span> Recycle Bin  <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
+            <div class="bg-white p-4  box-shadow">
+              
+                <input type="text" class="form-control mb-2"  v-model="filterSearch" @keyup="searchRemovedDocs" placeholder="Search here . . ." id="search-all-removed-docs" required>
+                <div class="table-responsive clearfix ">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Trace #</th>
+                        <th>Document</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                      
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="doc in removedDocs">
+                            <td>[doc.status]</td>
+                            <td class="max-td">[ getDocName(doc.document) ]</td>
+                            <td>[doc.desc]</td>
+                            <td>[doc.type]</td>
+                            <td>[doc.department]</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm " style="margin-right: 0.2em;" data-bs-toggle="modal" data-bs-target="#unRemovedDoc" @click="docId = doc.id"><span class="fa fa-recycle"></span></button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteDocModal" @click="docId = doc.id"><span class="fa fa-trash"></span></button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <p v-if="removedDocs.length == 0" class="text-center alert">No Data Available</p>
+                <b class="show-entries">Show</b>
+                <!-- v-for="toShow in limitToShowReceived"   :value="toShow" -->
+                    <select v-model="docsToShowCtr"  class="totalToShow">
+                        <option v-for="toShow in limitToShow"   :value="toShow">[toShow]</option>
+                        
+                    </select>
+                    <b class="entries">Entries 
+                    
+                </b>
+                </div>
+            </div>
+            <p class="mb-2 table-title mt-4"><span class="red fa fa-trash"></span> Removed Documents</p>
+            <div class="bg-white p-4 mt-2  box-shadow">
+              
+                <input type="text" class="form-control mb-2"  v-model="filterSearchAll" @keyup="searchAllRemovedDocs" placeholder="Search here . . ." id="search-all-removed-docs" required>
+                <div class="table-responsive clearfix ">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Trace #</th>
+                        <th>Document</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                      
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="doc in allremovedDocs">
+                            <td>[doc.status]</td>
+                            <td class="max-td">[ getDocName(doc.document) ]</td>
+                            <td>[doc.desc]</td>
+                            <td>[doc.type]</td>
+                            <td>[doc.department]</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm " style="margin-right: 0.2em;" data-bs-toggle="modal" data-bs-target="#unRemovedDoc" @click="docId = doc.id"><span class="fa fa-recycle"></span></button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteDocModal" @click="docId = doc.id"><span class="fa fa-trash"></span></button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <p v-if="removedDocs.length == 0" class="text-center alert">No Data Available</p>
+                <b class="show-entries">Show</b>
+                <!-- v-for="toShow in limitToShowReceived"   :value="toShow" -->
+                    <select v-model="docsToShowCtrAll"  class="totalToShow">
+                        <option v-for="toShow in limitToShowAll"   :value="toShow">[toShow]</option>
+                        
+                    </select>
+                    <b class="entries">Entries 
+                    
+                </b>
+                </div>
+            </div>
+        </div>
+              <!-- The Modal for deleting document -->
+              <div class="modal fade" id="deleteDocModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Permanently Delete Document</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                
+                        <!-- Modal body -->
+                        <div class="modal-body pl-4 pr-4 pt-1">
+                            
+                                <p class="alert alert-danger text-center mb-1 mt-3">Are you sure you want to delete this document permanently?</p>
+    
+                        </div>
+                
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" @click="deleteDocumentPermanently()">Yes</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+                <!-- The Modal for deleting document -->
+                <div class="modal fade" id="unRemovedDoc">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                    
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Re-Approved Document</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                    
+                            <!-- Modal body -->
+                            <div class="modal-body pl-4 pr-4 pt-1">
+                                
+                                    <p class="alert alert-info text-center mb-1 mt-3">Are you sure you want to make this document active again?</p>
+        
+                            </div>
+                    
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" @click="unRemovedDoc()">Yes</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+                <br>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  {% load static %}
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap5.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/user/main.css' %}">
+  <script src="{% static 'assets/js/bootstrap5.bundle.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'assets/boxicons/css/boxicons.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/fontawesome/css/all.css' %}">
+</head>
+
+
+<body id="body-pd">
+
+    {% block admin %}
+
+    {% endblock %}
+
+<script src="{% static 'assets/js/vue.js' %}"></script>
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'assets/js/axios.js' %}"></script>
+<script src="{% static 'assets/js/sweetalert.js' %}"></script>
+<script src="{% static 'assets/js/main_users_admin.js' %}"></script>
+{% if request.session.title == 'Home' %}
+<script src="{% static 'assets/js/admins/index.js' %}"></script>
+{% endif %}
+{% if request.session.title == 'My Documents' %}
+<script src="{% static 'assets/js/admins/mydocuments.js' %}"></script>
+{% endif %}
+{% if request.session.title == 'Documents' %}
+<script src="{% static 'assets/js/admins/documents.js' %}"></script>
+{% endif %}
+{% if request.session.title == 'Departments' %}
+<script src="{% static 'assets/js/admins/departments.js' %}"></script>
+{% endif %}
+{% if request.session.title == 'Users' %}
+<script src="{% static 'assets/js/admins/users.js' %}"></script>
+{% endif %}
+{% if request.session.title == 'Doctype' %}
+<script src="{% static 'assets/js/admins/doctype.js' %}"></script>
+{% endif %}
+{% if request.session.title == 'Recycle Bin' %}
+<script src="{% static 'assets/js/admins/recyclebin.js' %}"></script>
+{% endif %}
+{% if request.session.title == 'Settings' %}
+<script src="{% static 'assets/js/admins/settingsx.js' %}"></script>
+{% endif %}
+
+</body>
+</html>

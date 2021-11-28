@@ -1,0 +1,95 @@
+          
+            <div class="folders-and-files" >
+              
+                <input type="hidden" name="folder_path" value="{{ folder_path }}">
+                <input type="hidden" name="current_path" value="{{ current_path }}">
+                <div class="folders" v-for="fd in pathFolders">
+                    
+                    <div class="folder-file-flex">
+                       <a :href="'/user/documents/'+currentPath+'%'+fd.foldername" class="folder-file-link">
+                           <img :src="'/media/'+fd.logo"   alt="">
+                         
+                                  
+                                  <p class="mt-2"> [fd.foldername]</p>
+
+                        </a>
+                        <div class="tooltip"><span  class="ellipsis fa fa-ellipsis-v"></span>
+                         
+                           <ul class="tooltiptext">
+                               <li> <span class="fontawesome-overwrite fa fa-folder-open"></span>  <a :href="'/user/documents/'+currentPath+'%'+fd.foldername">Open</a> </li>
+                       
+                               <li> <span class="fontawesome-overwrite fa fa-edit"></span> <a href="javascript:void(0)" @click="currentFolderOrFileName = fd.foldername;toRename = 'Folder';renameFolderFile = true"> Rename</a></li>
+                               <li> <span class="fontawesome-overwrite fa fa-download"></span> <a href="javascript:void(0)" @click="deleteFolder = true"> Download</a></li>
+                               <li> <span class="fontawesome-overwrite fa fa-trash"></span> <a href="javascript:void(0)" @click="toDeleteFolder = fd.foldername;deleteFolder = true"> Delete</a></li>
+                               <li> <span class="fontawesome-overwrite fa fa-info"></span> <a href="javascript:void(0)" @click="deleteFolder = true"> Details</a></li>
+                               
+                           </ul>
+                       </div>
+                   </div>
+                </div>
+                
+                <div class="files" v-for="file in pathFiles">
+                        
+                    <div class="folder-file-flex">
+                        <a :href="'/user/viewfile/'+currentPath+'%'+file.filename" class="file-link" >
+                            <img :src="'/media/'+file.logo" alt="">
+                        
+                            <p class="filename"> [file.filename]</p>
+                         </a>
+                         <div style="width: 10%;" class="tooltip"><span  class="ellipsis fa fa-ellipsis-v"></span>
+                           
+                            <ul class="tooltiptext">
+                                <li> <span class="fontawesome-overwrite fa fa-folder-open"></span> <a :href="'/user/viewfile/'+currentPath+'%'+file.filename">Open</a></li>
+                                <li> <span class="fontawesome-overwrite fa fa-edit"></span><a href="javascript:void(0)" @click="currentFolderOrFileName = file.filename;toRename = 'File';renameFolderFile = true"> Rename</a></li>
+                                <li> <span class="fontawesome-overwrite fa fa-download"></span> <a href="javascript:void(0)" @click="deleteFolder = true"> Download</a></li>
+                                <li> <span class="fontawesome-overwrite fa fa-trash"></span> <a href="javascript:void(0)" @click="toDeleteFile = file.filename;deleteFile = true"> Delete</a></li>
+
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+            
+
+         
+       </div>
+     <!-- <div class="modal" v-if="uploadFolder">
+                <div class="modalDialog">
+                    <div class="modalHeader">   
+                        <p class="modalTitle">Upload New Folder <span class="to-right" @click="uploadFolder = false">&times;</span> </p>
+                    </div>
+                    <div class="modalBody">
+                        <form @submit.prevent=toUploadFolder()>
+                            {% csrf_token %}
+                            <label for="">Select Folder</label>
+                            <div class="mt-5" >
+                                <label class="custom-file-upload" >
+                                    <input type="file" ref="folder" @change="handleFolderUpload()" webkitdirectory  id="folders" required multiple />
+                                    
+                                    <p class="files-name">
+                                        <i class="fa fa-upload upload-logo"></i> <br>
+                                       [folderPlaceholder]</p>
+                                </label>
+                                <button type="submit" id="addFolder"> Upload Folder</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="modal" v-if="createFolder">
+                <div class="modalDialog">
+                    <div class="modalHeader">   
+                        <p class="modalTitle">Create New Folder <span class="to-right" @click="createFolder = false">&times;</span> </p>
+                    </div>
+                    <div class="modalBody">
+                        <form @submit.prevent="addFolder()">
+                            <label for="">New Folder</label>
+                            <input type="text" placeholder="Enter folder name . . ." v-model="newfolder" required>
+                            <button type="submit" id="addFolder">Add Folder</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div> -->

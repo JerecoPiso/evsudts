@@ -1,0 +1,96 @@
+{% extends 'html/templates/base.html' %}
+
+{% block login_signup %}
+
+
+        <template id="login-form">
+            <div class="modal" id="modal">
+                <div class="modalDialog">
+                    <div class="modalHeader">
+                        <button type="button" @click="showRecoverAccount('hide')" class="close" style="margin-top: -5px;">&times;</button>
+                    </div>
+                    <div class="modalBody">
+
+                        <form @submit.prevent="checkAccount()" id="recover-acc">
+                            <label for="">Username</label>
+                            <div class="form-input">
+                                <span><i class="fa fa-user"></i></span>
+                                <input type="text" v-model="recAccInfo.username" placeholder="Enter username . . ."  > <br>
+                               
+                            </div>
+                            <label for="">Hint</label>
+                            <div class="form-input">
+                                <span><i class="fa fa-question"></i></span>
+                                <input type="text" v-model="recAccInfo.hint" placeholder="Enter recovery hint . . ."  > <br>
+                               
+                            </div>
+                            <button type="submit" class="recover-btn" >Recover Account</button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal" id="newpass">
+                <div class="modalDialog">
+                    <div class="modalHeader">
+                        <button type="button" @click="showNewPass('hide')" style="margin-top: -5px;" class="close">&times;</button>
+                    </div>
+                    <div class="modalBody">
+
+                        <form @submit.prevent="changePass()" id="recover-acc">
+                            <label for="">Password</label>
+                            <div class="form-input">
+                                <span><i class="fa fa-user"></i></span>
+                                <input type="password" v-model="recAccInfo.password" placeholder="Enter password . . ." required > <br>
+                               
+                            </div>
+                            <label for="">Re-type Password</label>
+                            <div class="form-input">
+                                <span><i class="fa fa-question"></i></span>
+                                <input type="password" v-model="recAccInfo.pass2" placeholder="Re-type password . . ." required > <br>
+                               
+                            </div>
+                            <button type="submit" class="recover-btn">Change Password</button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+           
+            <!-- <form action="login" method="POST" id="login"> -->
+            <form @submit.prevent="userLogin()" id="login">
+                <img src="/media/user.jpg" class="logo" alt="user">
+                {% csrf_token %}
+               
+                        <div class="error" v-if="error">
+                            <span id="x-err"   @click="remove()">&times;</span>
+                            [ error ]
+                         
+                        </div>
+                  
+                <label for="">Username</label>
+                <div class="form-input">
+                    <span><i class="fa fa-user"></i></span>
+                    <input type="text"  v-model="username" id="username" placeholder="Enter username . . ." required > <br>
+                    
+                </div>
+                <label for="">Password</label>
+                <div class="form-input">
+                    <span><i class="fa fa-lock"></i></span>
+                    <input type="password"  v-model="password"  placeholder="Enter password . . ." required > <br>
+                    
+                </div>
+                <!-- @click="show()" -->
+                <button type="submit" class="login" >Login</button>
+                <p class="forgot-pass"> <a href="javascript:void(0)" @click="showRecoverAccount('show')"  >Forgot password?</a> </p> 
+                <!-- <input type="checkbox" v-model="role" >Login as Admin -->
+                <label class="checkbox">Login as Admin
+                    <input type="checkbox" v-model="role" >
+                    <span class="checkmark"></span>
+                  </label>
+                <a href="/signup" class="dont-have-acc" @click="showLogin = false">Dont have an account?</a>
+            </form>
+
+        </template>
+     
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'html/templates/user.html' %}
+
+{% block user %}
+   
+{% include 'html/user/sidenav.html' %}
+<!--Container Main start-->
+{% csrf_token %}
+<div class="height-100  pt-3 pl-1 pr-1 " id="index">
+      
+        <div class="container">
+            <h4 class="pl-3 page-title"> <span class="fa fa-user"></span> Welcome, {{ request.session.username }} <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
+            <div class="row"  >
+                <div class="col-lg-8 col-sm-12">
+                    <div class="box-shadow bg-white p-3">
+                        <p class="mb-1 reg-size"> <strong>Notifications</strong> </p>
+                        <ul class="list-group" id="notif">
+                            {% if messages %}
+                         
+                                {% for message in messages %}
+                                    <li {% if message.tags %} class="{{ message.tags }} list-group-item"{% endif %}> <p class="alert alert-success text-center">{{ message }}</p> </li>
+                                {% endfor %}
+                         
+                            {% endif %}
+                            <li class="list-group-item" v-for="notif in notifications">
+                                <div class="alert alert-info p-2 mb-1 mt-2">
+                                    <p class="mb-1 alert p-1 wordbreak" v-html="notif.notification"></p>
+                               
+                                    <p class="text-success alert p-1  mb-1"><span class="fa fa-calendar"></span> [notif.date] <button data-bs-toggle="modal" data-bs-target="#deleteNotif" @click="notifId = notif.id" class=" pull-right delete-notif-btn"><span data-bs-toggle="tooltip" title="Remove" class="red fa fa-trash" ></span></button>  </p>
+                                </div>
+                               
+                            </li>
+                            <p v-if="notifications.length == 0 " class="alert alert-info text-center">No notification to show</p>
+                        
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="box-shadow bg-white p-3">
+                        <p class="mb-1 reg-size"><strong>Recent Activities</strong> </p>
+                        <ul class="list-group" id="recent">
+                           
+                            <li class="list-group-item text-break " v-for="rec in recentActivities">
+                        
+                                 <div class="alert alert-info mt-2 p-2 mb-1 wordbreak">
+                
+                                    <p class="p-1 mb-1" v-html="rec.notification"> </p>  
+                                    <p class="p-1 mt-1 mb-1"><span class="fa fa-calendar text-success"></span> <span class=" text-success"> [rec.date] </span></p>
+                                    
+                                 </div>
+                               
+                        
+                            </li>
+                            <p v-if="recentActivities.length == 0 " class="alert alert-info text-center">No recent activities to show</p>
+                           
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+           
+            
+        </div>
+        <div class="modal fade" id="deleteNotif">
+            <div class="modal-dialog">
+                <div class="modal-content">
+            
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Notification</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        
+                            <p class="alert alert-danger text-center mb-1 mt-3">Are you sure you want to delete this notification?</p>
+
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="deleteNotification()">Yes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

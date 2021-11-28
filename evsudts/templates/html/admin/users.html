@@ -1,0 +1,208 @@
+{% extends 'html/templates/admin_base.html' %}
+
+{% block admin %}
+   
+{% include 'html/admin/sidenav.html' %}
+<!--Container Main start-->
+<div class="height-100  pt-3 pl-1 pr-1 " id="users" >
+       {% csrf_token %}
+        <div class="container">
+            <!-- <h4 class="pl-3 page-title">  | <span class="fa fa-trash"></span> Recycle Bin |</h4> -->
+            <h4 class="pl-3 page-title"> <span class="fa fa-users"></span> Users  <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
+            <div class="bg-white p-4 b box-shadow">
+                <button class="btn btn-primary mb-2"  title="Add Document" data-bs-toggle="modal" data-bs-target="#addUser"><span class="fa fa-plus"></span> Add</button>
+                <input type="text"  placeholder="Search . . ." v-model="searchval" @keyup="searchUser" class="mb-2 form-control" id="search-all-docs">
+                <div class="table-responsive clearfix ">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Deparment</th>
+                        <th>Action</th>
+                      
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user, index in usersList">
+                            <td v-if="index < toShowCtr">[user.id]</td>
+                            <td v-if="index < toShowCtr">[user.username]</td>
+                            <td v-if="index < toShowCtr">[user.role]</td>
+                            <td v-if="index < toShowCtr">[user.department]</td>
+                            <td v-if="index < toShowCtr">
+                                <button type="button" class="btn btn-primary btn-sm " style="margin-right: 0.2em;" data-bs-toggle="modal" data-bs-target="#editUser" @click="signupInfoForEditting.username = user.username;signupInfoForEditting.role = user.role;signupInfoForEditting.dept=user.department;signupInfoForEditting.hint=user.hint;userId=user.id"><span class="fa fa-edit"></span> Update</button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUser" @click="userId = user.id"><span class="fa fa-trash"></span> Delete</button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <p v-if="usersList.length == 0" class="text-center alert">No Data Available</p>
+                <b class="show-entries">Show</b>
+            
+                    <select v-model="toShowCtr"  class="totalToShow">
+                        <option v-for="toShow in limitToShow"   :value="toShow">[toShow]</option>
+                        
+                    </select>
+                    <b class="entries">Entries 
+                    
+                </b>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editUser">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update User</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        <form @submit.prevent="update()" class="p-2">
+                            {% csrf_token %}
+                            <div class="mb-2 mt-1">
+                                <label for="" class="form-label">Username</label>
+                                <input type="text" class="form-control" v-model="signupInfoForEditting.username"  placeholder="Enter username . . ." required>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <label for="">Department</label>
+                                <select class="form-select mt-2" v-model="signupInfoForEditting.dept"  required>
+                                    <option v-for="dept in departments" :value="dept.department">[dept.department]</option>
+                                    <!-- <option value="1">2</option>
+                                    <option value="1">3</option>
+                                    <option value="1">4</option> -->
+                                </select>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <label for="">Role</label>
+                                <select class="form-select mt-2" v-model="signupInfoForEditting.role"  required>
+                                   
+                                    <option value="User">User</option>
+                                    <option value="Admin">Admin</option> 
+                                </select>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <label for="" class="form-label">Recovery Hint</label>
+                                <input type="text" class="form-control" v-model="signupInfoForEditting.hint"  placeholder="Enter username . . ." required>
+                            </div>
+                              
+                         
+                         
+                        
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <!-- <div class="modal-footer">
+                    
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div> -->
+            
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addUser">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add User</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        <form @submit.prevent="signup()" class="p-2">
+                            {% csrf_token %}
+                            <div class="mb-2 mt-1">
+                                <label for="" class="form-label">Username</label>
+                                <input type="text" class="form-control" v-model="signupInfo.username"  placeholder="Enter username . . ." required>
+                            </div>
+                            <label for="" class="form-label">Password</label>
+                            <div class="input-group mb-2">
+                             
+                                <input type="password" class="form-control" ref="pass" v-model="signupInfo.password" placeholder="Enter password . . ." required>
+                                <button class="btn btn-primary" @click="viewPass()" type="button"><span class="fa fa-eye" v-if="viewpassword"></span><span class="fa fa-eye-slash" v-if="!viewpassword"></span></button>
+                            </div>
+                            <label for="" class="form-label">Re-type Password</label>
+                            <div class="input-group mb-2">
+                             
+                                <input type="password" class="form-control" ref="pass2" v-model="signupInfo.password2" placeholder="Re-type password . . ." required>
+                                <button class="btn btn-primary" @click="viewPass2()" type="button"><span class="fa fa-eye" v-if="viewpassword2"></span><span class="fa fa-eye-slash" v-if="!viewpassword2"></span></button>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <label for="">Department</label>
+                                <select class="form-select mt-2" v-model="signupInfo.dept"  required>
+                                    <option v-for="dept in departments" :value="dept.department">[dept.department]</option>
+                                    <!-- <option value="1">2</option>
+                                    <option value="1">3</option>
+                                    <option value="1">4</option> -->
+                                </select>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <label for="">Role</label>
+                                <select class="form-select mt-2" v-model="signupInfo.role"  required>
+                                   
+                                    <option value="User">User</option>
+                                    <option value="Admin">Admin</option> 
+                                </select>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <label for="" class="form-label">Recovery Hint</label>
+                                <input type="text" class="form-control" v-model="signupInfo.hint"  placeholder="Enter username . . ." required>
+                            </div>
+                              
+                         
+                         
+                        
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <!-- <div class="modal-footer">
+                    
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div> -->
+            
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteUser">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete User</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        <p class="alert alert-danger text-center mt-2 mb-1">Are you sure you want to delete this User Account?</p>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="deleteUser()" >Yes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+
+</div>
+{% endblock %}

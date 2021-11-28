@@ -1,0 +1,152 @@
+{% extends 'html/templates/admin_base.html' %}
+
+{% block admin %}
+   
+{% include 'html/admin/sidenav.html' %}
+<!--Container Main start-->
+<div class="height-100  pt-3 pl-1 pr-1 " id="doctype" >
+       {% csrf_token %}
+        <div class="container">
+            <!-- <h4 class="pl-3 page-title">  | <span class="fa fa-trash"></span> Recycle Bin |</h4> -->
+            <h4 class="pl-3 page-title"> <span class="fa fa-bookmark"></span> Departments <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
+            <div class="bg-white p-4 b box-shadow">
+                <button class="btn btn-primary mb-2"  title="Add Document" data-bs-toggle="modal" data-bs-target="#addType"><span class="fa fa-plus"></span> Add</button>
+                <input type="text"  placeholder="Search . . ." v-model="searchval" @keyup="searchType" class="mb-2 form-control" id="search-all-docs">
+                <div class="table-responsive clearfix ">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                      
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="type, index in types">
+                            <td v-if="index < toShowCtr">[type.id]</td>
+                            <td v-if="index < toShowCtr">[type.type]</td>
+                           
+                            <td v-if="index < toShowCtr">
+                                <button type="button" class="btn btn-primary btn-sm " style="margin-right: 0.2em;" data-bs-toggle="modal" data-bs-target="#updateType" @click="newNameType = type.type; typeId=type.id"><span class="fa fa-edit"></span> Update</button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteType" @click="typeId = type.id"><span class="fa fa-trash"></span> Delete</button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <p v-if="types.length == 0" class="text-center alert">No Data Available</p>
+                <b class="show-entries">Show</b>
+             
+                    <select v-model="toShowCtr"  class="totalToShow">
+                        <option v-for="toShow in limitToShow"   :value="toShow">[toShow]</option>
+                        
+                    </select>
+                    <b class="entries">Entries 
+                    
+                </b><br><br>
+                </div>
+            </div>
+        </div>
+        <!-- The Modal for Uploading Document-->
+        <div class="modal fade" id="addType">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Document Type</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        <form @submit.prevent="addType()" class="p-2">
+                            {% csrf_token %}
+                            <div class="mb-2 mt-1">
+                                <label for="" class="form-label">Document</label>
+                                <input type="text" class="form-control" v-model="newType"  placeholder="Enter department . . ." required>
+                            </div>
+                         
+                         
+                        
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="updateType">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Document Type</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        <form @submit.prevent="updateType()" class="p-2">
+                            {% csrf_token %}
+                            <div class="mb-2 mt-1">
+                                <label for="" class="form-label">Document</label>
+                                <input type="text" class="form-control" v-model="newNameType"  placeholder="Enter department . . ." required>
+                            </div>
+                         
+                         
+                        
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteType">
+            <div class="modal-dialog">
+                <div class="modal-content">
+            
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Document Type</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        
+                            <p class="alert alert-danger text-center mb-1 mt-3">Are you sure you want to removed this document type?</p>
+
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="deleteType()">Yes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

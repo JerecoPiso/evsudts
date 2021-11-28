@@ -1,0 +1,618 @@
+{% extends 'html/templates/admin_base.html' %}
+
+{% block admin %}
+   
+{% include 'html/admin/sidenav.html' %}
+  
+<div class="container height-100 pt-3" id="mydocs">
+    <h4 class="pl-3 page-title"> <span class="fa fa-folder-open"></span> My Documents  <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
+    <button class="btn btn-primary mt-2 mb-3" @click="getPendingSharedDocs()"><span class="	fa fa-share-square"></span> Pending Shared Documents</button>    
+   
+    <h3 class="table-title"> <span class="blue fa fa-briefcase"></span>  All Documents</h3>
+        <div class="bg-white p-4 b box-shadow">
+            <button class="btn btn-primary mb-2"  title="Add Document" data-bs-toggle="modal" data-bs-target="#myModal"><span class="fa fa-plus"></span> Add</button>
+            <button class="btn btn-success mb-2" style="margin-left:  0.5em;"  data-bs-toggle="modal" data-bs-target="#sendDoc"><span class="fa fa-share"></span> Send</button>
+            <input type="text" v-model="filter" @keyup="searchDocs" placeholder="Search . . ." class="mb-2 form-control" id="search-all-docs">
+            <div class="table-responsive clearfix">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Trace #</th>
+                            <th>Document</th>
+                            <th >Description</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Department</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="doc,index in documents">
+                              
+                                <td v-if="index < docsToShowCtr" >[doc.trace_id]</td>
+                                <td v-if="index < docsToShowCtr" data-bs-toggle="tooltip" data-bs-placement="bottom" :title="getDocName(doc.document)" class="max-td">[ getDocName(doc.document) ]  <p class="text-center mb-1 mt-2"><button class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#rename" @click="newFilename=getDocName(doc.document);newFilenameId=doc.id"> <span class="fa fa-edit"></span> Rename</button></p> </td>
+                                <td v-if="index < docsToShowCtr" class="max-td">[doc.desc]</td>
+                                <td v-if="index < docsToShowCtr">[doc.type]</td>
+                                <td v-if="index < docsToShowCtr">[doc.uploaded_at]</td>
+                                <td v-if="index < docsToShowCtr" class="text-center pt-4"> <b v-if="doc.status == 'Approved' " class="alert-info p-2">[doc.status]</b> <b v-if="doc.status == 'Pending' " class="alert-danger p-2">[doc.status]</b></td>
+                                <td v-if="index < docsToShowCtr">[doc.department]</td>
+                                <td v-if="index < docsToShowCtr" class="min-action-btns">
+                                    <button type="button" @click="docResponseInfo.comment = ''; docResponseInfo.sender ='';docResponseInfo.docname = doc.document;docResponseInfo.traceid = doc.trace_id;docResponseInfo.qrcode = doc.qr_code;docResponseInfo.type = doc.type;docResponseInfo.dept = doc.department;docResponseInfo.date = doc.uploaded_at;docResponseInfo.desc = doc.desc;docResponseInfo.status = doc.status" data-bs-toggle="modal" data-bs-target="#showDocInfo" class="mt-1 btn btn-primary btn-action btn-sm" style="margin-right: 0.2em;" data-bs-toggle="tooltip" title="View Document Info"><span class="fa fa-eye"></span></button>
+                                    <button type="button" @click="forUpdateDocInfo.id=doc.id;forUpdateDocInfo.desc=doc.desc;forUpdateDocInfo.type=doc.type;forUpdateDocInfo.dept=doc.department" class="mt-1 btn btn-success btn-action btn-sm " style="margin-right: 0.2em;" data-bs-toggle="modal" data-bs-target="#updateDoc" ><span class="fa fa-edit"></span></button>
+                                    <button type="button" class="mt-1 btn btn-danger btn-action btn-sm" style="margin-right: 0.2em;" data-bs-toggle="modal" data-bs-target="#deleteDocModal" @click="docInfo.id = doc.id"><span class="fa fa-trash"></span></button>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#shareDoc" class="mt-1 btn btn-primary btn-action btn-sm" @click="shareDocInfo.docid = doc.id"><span class="fa fa-share"></span></button>
+                                </td>
+                           
+                        
+                        </tr>
+                    </tbody>
+                </table>
+                <p v-if="documents.length == 0" class="text-center alert">No Data Available</p>
+                <b class="show-entries">Show</b>
+					<select v-model="docsToShowCtr"  class="totalToShow">
+						<option v-for="toShow in limitToShow"  :value="toShow">[toShow]</option>
+						
+					</select>
+					<b class="entries">Entries 
+					
+				</b> <br><br>
+            </div>
+        </div>
+        
+        
+        <div class="row ">
+            <div class="col-lg-12">
+                <p class="mb-2 table-title mt-4"><span class="blue fa fa-share-square"></span> Received Documents</p>
+                <div class="bg-white mt-2 p-4 b box-shadow">
+                 
+                    <input type="text" class="form-control mb-2" v-model="filterReceived" @keyup="searchReceived" placeholder="Search . . ." id="search-all-received-docs">
+                    <div class="table-responsive clearfix" >
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Trace #</th>
+                                    <th>Document</th>
+                                    <th>Sender</th>
+                                    <th>Type</th>
+                                    <th>Department</th>
+                                    <th>Date Received</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="doc, index in receivedDocs">
+                                    <td v-if="index < receivedToShowCtr" class="max-td">[doc.traceid]</td>
+                                    <td v-if="index < receivedToShowCtr" class="max-td">[ getDocName(doc.docname) ]</td>
+                                    <td v-if="index < receivedToShowCtr" class="max-td">[doc.sender]</td>
+                                    <td v-if="index < receivedToShowCtr">[doc.type]</td>
+                                    <td v-if="index < receivedToShowCtr">[doc.department]</td>
+                                    <td v-if="index < receivedToShowCtr">[doc.received_on]</td>
+                                    <td v-if="index < receivedToShowCtr" class="min-action-btns">
+                                        
+                                        <p  v-if="doc.doc_status == 'Removed' 
+                                        " class="alert alert-danger p-2 text-center mb-1">Document Unavailable</p>
+                                        <button type="button" @click="docResponseInfo.comment=doc.comment;docResponseInfo.docname = doc.docname;docResponseInfo.traceid = doc.traceid;docResponseInfo.qrcode = doc.traceid+'.png';docResponseInfo.type = doc.type;docResponseInfo.dept = doc.department;docResponseInfo.date = doc.received_on;docResponseInfo.desc = '';docResponseInfo.status = doc.status;docResponseInfo.sender = doc.sender" data-bs-toggle="modal" data-bs-target="#showDocInfo" class="btn btn-primary btn-action btn-sm" style="margin-right: 0.2em;" data-bs-toggle="tooltip" title="View Document Info"><span class="fa fa-eye"></span></button>
+                                        <button type="button" class="btn btn-danger btn-action btn-sm" style="margin-right: 0.2em;"  data-bs-toggle="modal" data-bs-target="#deleteReceivedDocModal" @click="toDeleteReceivedDocId = doc.id"><span class="fa fa-trash"></span></button>
+                                            
+                                        <button v-if="doc.doc_status != 'Removed'
+
+                                        " type="button" class="btn btn-primary btn-action btn-sm" style="margin-right: 0.2em;" @click="downloadDoc(doc.docname)" data-bs-toggle="tooltip" title="View Document Info"><span class="fa fa-download"></span></button>
+                                     
+                                        
+                                    </td>
+        
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p v-if="receivedDocs.length == 0" class="text-center alert">No Data Available</p>
+                        <b class="show-entries">Show</b>
+                            <select v-model="receivedToShowCtr"  class="totalToShow">
+                                <option v-for="toShow in limitToShowReceived"   :value="toShow">[toShow]</option>
+                                
+                            </select>
+                            <b class="entries">Entries 
+                            
+                        </b><br><br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <p class="mb-2 table-title mt-4"><span class="fa fa-toggle-off red"></span> Unapproved Documents</p>
+                <div class="bg-white p-3 mt-2 b box-shadow">
+                    <button class="btn btn-primary" @click="approvedAllPendingDocs()"><span class="fa fa-thumbs-up"></span> &ThinSpace; Approved All</button>
+                    <input type="text" class="form-control mb-2" v-model="filterUnapprovedSharedDocs" @keyup="searchunapprovedshareddocs" placeholder="Search . . ." id="search-all-shared-docs">
+                    <div class="table-responsive clearfix">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Trace #</th>
+                                    <th>Document</th>
+                                    <th>Type</th>
+                                    <th>Department</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="doc, index in shareddocs">
+                                    <td v-if="index < unapprovedToShowCtr">[doc.traceid]</td>
+                                    <td v-if="index < unapprovedToShowCtr" class="max-td">[ getDocName(doc.docname) ]</td>
+                                
+                                    <td v-if="index < unapprovedToShowCtr">[doc.type]</td>
+                                    <td v-if="index < unapprovedToShowCtr">[doc.department]</td>
+                                    <td v-if="index < unapprovedToShowCtr" class="min-action-btns">
+                                        <button type="button" @click="approvedDoc(doc.id)" class="btn btn-primary  btn-sm" style="margin-right: 0.2em;" data-bs-toggle="tooltip" title="Approved"><span class="fa fa-thumbs-up"></span> Approved</button>
+                                        <button type="button" @click="toRejectDocId = doc.id" class="btn btn-danger  btn-sm" style="margin-right: 0.2em;" data-bs-toggle="modal" data-bs-target="#rejectDoc" title="Reject"><span class="fa fa-minus-circle"></span> Reject</button>
+                                      
+                                    </td>
+        
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <p v-if="shareddocs.length == 0" class="text-center alert">No Data Available</p>
+                        <b class="show-entries">Show</b>
+                        <select v-model="unapprovedToShowCtr"  class="totalToShow">
+                            <option v-for="toShow in limitToShowUnapproved"   :value="toShow" >[toShow]</option>
+                            
+                        </select>
+                        <b class="entries">Entries 
+                        
+                    </b><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+                  <!-- The Modal for Uploading Document-->
+                  <div class="modal fade" id="rename">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Rename Document</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                    
+                            <!-- Modal body -->
+                            <div class="modal-body pl-4 pr-4 pt-1">
+                                <form @submit.prevent="rename()" class="p-2">
+                                    {% csrf_token %}
+                           
+                                        <label for="">New Name</label>
+                                        <input type="text" class="form-control" v-model="newFilename" required>
+                                        
+                                        <div class="d-grid mt-2">
+                                            <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                                        </div>
+                                </form>
+                            </div>
+                    
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                            
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                    
+                        </div>
+                    </div>
+                </div>
+          <!-- The Modal for Uploading Document-->
+          <div class="modal fade" id="updateDoc">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Document</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        <form @submit.prevent="updateDocument()" class="p-2">
+                            {% csrf_token %}
+                   
+                            <div class="mb-2 mt-1">
+                                <label for="comment" class="form-label">Description</label>
+                                <textarea class="form-control" v-model="forUpdateDocInfo.desc" rows="4" id="comment" required></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-2">
+                                        <label for="pwd" class="form-label">Department</label>
+                                        <select class="form-select"  v-model="forUpdateDocInfo.dept" required>
+                                            <option v-for="dept in departments" :value="dept.department">[dept.department]</option>
+            
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-2">
+                                        <label for="pwd" class="form-label">Type</label>
+                                        <select class="form-select"  v-model="forUpdateDocInfo.type">
+                                            <option v-for="doctype in doctypes" :value="doctype.type">[doctype.type]</option>
+        
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+        <!-- The Modal for Uploading Document-->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Document</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        <form @submit.prevent="uploadDocument()" class="p-2">
+                            {% csrf_token %}
+                            <div class="mb-2 mt-1">
+                                <label for="email" class="form-label">Document</label>
+                                <input type="file" class="form-control" ref="file" id="file" @change="handleFileUpload()" placeholder="Enter email" required>
+                            </div>
+                            <div class="mb-2 mt-1">
+                                <label for="comment" class="form-label">Description</label>
+                                <textarea class="form-control" v-model="docInfo.desc" rows="4" id="comment" required></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-2">
+                                        <label for="pwd" class="form-label">Department</label>
+                                        <select class="form-select"  v-model="docInfo.dept" required>
+                                            <option v-for="dept in departments" :value="dept.department">[dept.department]</option>
+                                
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-2">
+                                        <label for="pwd" class="form-label">Type</label>
+                                        <select class="form-select"  v-model="docInfo.type">
+                                            <option v-for="doctype in doctypes" :value="doctype.type">[doctype.type]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn-add btn btn-primary p-2">Submit</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+            <!-- The Modal for deleting document -->
+            <div class="modal fade" id="rejectDoc">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                    
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Reject Document</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                    
+                            <!-- Modal body -->
+                            <div class="modal-body pl-4 pr-4 pt-1">
+                                
+                                    <p class="alert alert-danger text-center mb-1 mt-3">Are you sure you want to reject this document?</p>
+        
+                            </div>
+                    
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" @click="rejectDoc()">Yes</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+        
+                        </div>
+                        </div>
+                </div>
+        <!-- The Modal for deleting document -->
+        <div class="modal fade" id="deleteDocModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+            
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Removed Document</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        
+                            <p class="alert alert-danger text-center mb-1 mt-3">Are you sure you want to removed this document and move it to Recycle Bin?</p>
+
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="deleteDocument()">Yes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+                </div>
+        </div>
+        <!-- The Modal for deleting document -->
+        <div class="modal fade" id="deleteReceivedDocModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+            
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Received Document</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                        
+                            <p class="alert alert-danger text-center mb-1 mt-3">Are you sure you want to delete this received document?</p>
+
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="deleteReceivedDoc()">Yes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+              <!-- The Modal for deleting document -->
+              <div class="modal" id="showDocInfo"  >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Document Info</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                
+                        <!-- Modal body -->
+                        <div class="modal-body pl-4 pr-4 pt-1">
+                            <img :src="'/media/qrcodes/'+docResponseInfo.qrcode"  class="qrimage" alt="">
+                            <!-- <img src="/media/qrcodes/1000001.png" style="" alt=""> -->
+                            <!-- [docResponseInfo.docname] -->
+                            <p class="reg-size docinfo"><b>Document Name:</b> [getDocName(docResponseInfo.docname)]</p>
+                            <p class="reg-size docinfo"><b>Trace ID:</b>  [docResponseInfo.traceid]</p>
+                            <p class="reg-size docinfo"><b>Department:</b> [docResponseInfo.dept]</p>
+                            <p class="reg-size docinfo"><b>Type:</b> [docResponseInfo.type]</p>
+                            <p class="reg-size docinfo"><b>Date:</b> [docResponseInfo.date]</p>
+                            <p class="reg-size docinfo" v-if="docResponseInfo.desc"><b>Description:</b> [docResponseInfo.desc]</p>
+                            <p class="reg-size docinfo" ><b>Status:</b> [docResponseInfo.status]</p>
+                            <p class="reg-size docinfo" v-if="docResponseInfo.sender"><b>Sender:</b> [docResponseInfo.sender]</p>
+                            <p class="reg-size docinfo" v-if="docResponseInfo.comment"><b>Comment:</b> <br> [docResponseInfo.comment]</p>
+                            <button class="btn btn-primary docinfo" @click="downloadDoc(docResponseInfo.docname)">Download Document</button>
+                        </div>
+                
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+             <!-- The Modal for deleting document -->
+             <div class="modal" id="shareDoc"  >
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Share Document</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                
+                        <!-- Modal body -->
+                        <div class="modal-body pl-4 pr-4 pt-1">
+                            <ul class="list-group mt-2" id="users-list">
+                                <li class="list-group-item" v-for="user in users">[user.username] <button class="pull-right btn btn-primary btn-sm"  @click="shareDocInfo.receiver_id = user.id; shareDocInfo.receiver_name = user.username;show()">Share </button> <span>  &ThinSpace; &ThinSpace;( [user.department] ) </span></li>
+                            </ul>
+                        </div>
+                
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+                <!-- The Modal for deleting document -->
+                <div class="modal" id="pendingDocs">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                    
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Pending Document</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                    
+                            <!-- Modal body -->
+                            <div class="modal-body pl-4 pr-4 pt-1">
+                                <ul class="list-group mt-2" id="users-list">
+                                    <li class="list-group-item " v-for="doc, index in pendingDocs" v-if="pendingDocs.length > 0"> 
+                                        <p><strong>Document Name: </strong>[ getDocName(doc.docname) ] </p>
+                                        <p><strong>Receiver: </strong>[ doc.receiver_name ] </p>
+                                        <p><strong>Date Send: </strong>[ doc.send_on ] </p>
+                                        <p><strong>Type: </strong>[ doc.type ] </p>
+                                        <p class="mb-1"><strong>Department: </strong>[ doc.department ] </p>
+                                        
+                                        <button class="pull-right btn btn-danger btn-sm" @click="cancelShare(index, doc.id)"><span class="fa fa-minus-circle"></span> Cancel</button> </li>
+                                     <li v-else>
+                                         <p class="alert text-center">No Pending Documents</p>
+                                     </li>
+                                    </ul>
+                            </div>
+                    
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+
+                          <!-- The Modal for Uploading Document-->
+          <div class="modal fade" id="comments">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Comment</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body pl-4 pr-4 pt-1">
+                            <form @submit.prevent="checkComment">
+                                <div class="mb-2 mt-1">
+                                    <label for="comment" class="form-label">Comment</label>
+                                    <textarea class="form-control" v-model="shareDocInfo.comment"  rows="4" id="comment" required></textarea>
+                                </div>
+                                
+                               
+                            
+                                <div class="d-grid mt-2">
+                                    <button type="submit" class="btn-add btn btn-primary p-2">Add Comment</button>
+                                </div>
+                            </form>
+                           
+                      
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+                        <!-- The Modal for Uploading Document-->
+                        <div class="modal fade" id="sendDoc">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Send Document</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                            
+                                    <!-- Modal body -->
+                                    <div class="modal-body pl-4 pr-4 pt-1">
+                                        <form @submit.prevent="sendDocument()" class="p-2">
+                                            {% csrf_token %}
+                                            <div class="mb-2">
+                                                <label for="pwd" class="form-label">Receiver</label>
+                                                <!-- <input type="text"  placeholder="Search . . ." class="mb-2 form-control" id="search-all-docs"> -->
+                                                <select class="form-select"  v-model="sendDocInfo.receiver_id" required>
+                                                    <option  v-for="user in users" :value="user.id">[user.username]</option>
+                                                    <!-- <option value="1">2</option>
+                                                    <option value="1">3</option>
+                                                    <option value="1">4</option> -->
+                                                </select>
+                                            </div>
+                                            <div class="mb-2 mt-1">
+                                                <label for="email" class="form-label">Document</label>
+                                                <input type="file" class="form-control" ref="filetosend" id="filetosend" @change="handleFileSend()" placeholder="Enter email" required>
+                                            </div>
+                                            <div class="mb-2 mt-1">
+                                                <label for="comment" class="form-label">Comment</label>
+                                                <textarea class="form-control" v-model="sendDocInfo.comment" rows="4" id="comment" required></textarea>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-2">
+                                                        <label for="pwd" class="form-label">Department</label>
+                                                        <select class="form-select"  v-model="sendDocInfo.dept" required>
+                                                            <option v-for="dept in departments" :value="dept.department">[dept.department]</option>
+                                                            <!-- <option value="1">2</option>
+                                                            <option value="1">3</option>
+                                                            <option value="1">4</option> -->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-2">
+                                                        <label for="pwd" class="form-label">Type</label>
+                                                        <select class="form-select"  v-model="sendDocInfo.type">
+                                                            <option v-for="doctype in doctypes" :value="doctype.type">[doctype.type]</option>
+                                                        <!-- <option value="1">2</option>
+                                                        <option value="1">3</option>
+                                                        <option value="1">4</option> -->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+        
+                                        
+                                            <div class="d-grid mt-2">
+                                                <button type="submit" class="btn-add btn btn-primary p-2">Send</button>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                            
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                    
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                        </div>
+<!-- 
+            <footer>asd</footer> -->
+            <br>
+</div>
+
+{% endblock %}

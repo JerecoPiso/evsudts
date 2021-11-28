@@ -68,12 +68,12 @@ def mydocuments(request):
 
 def users(request):
     request.session['title'] = "Users"
-    # if request.session.get("user_loggin") and request.session.get("user_role") == "Admin":
+    if request.session.get("user_loggin") and request.session.get("user_role") == "Admin":
 
-    return render(request, 'html/admin/users.html')
+        return render(request, 'html/admin/users.html')
     
-    # else:
-    #     return redirect("/")
+    else:
+        return redirect("/")
     
 
 def department(request):

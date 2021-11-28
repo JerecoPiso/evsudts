@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.db.models import Q
 import os, shutil
 from pathlib import Path
-from pyzbar.pyzbar import decode
+# from pyzbar.pyzbar import decode
 from django.contrib.auth.hashers import make_password, check_password
 from evsudts.models import Documents, SharedFile
 

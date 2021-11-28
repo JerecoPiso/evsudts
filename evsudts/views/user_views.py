@@ -704,29 +704,30 @@ def renameDoc(request):
         else:
             doc = Documents.objects.get(id=request.POST['id'])
             ext = os.path.splitext(doc.document.name)[1]
-            
             current_name = os.path.join(settings.MEDIA_ROOT, str(doc.document.name))
-            # current_name = os.path.join(Path(__file__).resolve().parent.parent.parent, 'media\\'+str(doc.document.name))
-            new_name = os.path.join(settings.MEDIA_ROOT, request.POST['docname']+"_"+str(doc.trace_id)+ext)
-            # os.path.join(Path(__file__).resolve().parent.parent.parent, 'media\\'+request.POST['docname']+"_"+str(doc.trace_id)+ext)
-            os.rename(current_name,new_name)
-            doc.document = request.POST['docname']+"_"+str(doc.trace_id)+ext
-            if doc.uploader_id == request.session.get("id"):
-                notif = "You changed the name of <strong>"+getFilename(str(doc.document.name))+"</strong> to <strong>"+ request.POST['docname'].upper() +"</strong><br> <strong> Trace #: "+str(doc.trace_id)+"</strong>"
-                recent = RecentActivities(notification=notif, notified_id=request.session.get("id"), date=getDateTime())
-                recent.save()
+            if os.path.exists(current_name):
+                    new_name = os.path.join(settings.MEDIA_ROOT, request.POST['docname']+"_"+str(doc.trace_id)+ext)
+        
+                    os.rename(current_name,new_name)
+                    doc.document = request.POST['docname']+"_"+str(doc.trace_id)+ext
+                    if doc.uploader_id == request.session.get("id"):
+                        notif = "You changed the name of <strong>"+getFilename(str(doc.document.name))+"</strong> to <strong>"+ request.POST['docname'].upper() +"</strong><br> <strong> Trace #: "+str(doc.trace_id)+"</strong>"
+                        recent = RecentActivities(notification=notif, notified_id=request.session.get("id"), date=getDateTime())
+                        recent.save()
 
+                    else:
+                        notif = "An admin changed the name of <strong>"+getFilename(str(doc.document.name))+"</strong> to <strong>"+ request.POST['docname'].upper() +"</strong><br> <strong> Trace #: "+str(doc.trace_id)+"</strong>"
+                        recent = Notification(notification=notif, notified_id=doc.uploader_id, date=getDateTime())
+                        recent.save()
+                
+                    if SharedFile.objects.filter(traceid=doc.trace_id).count() > 0:
+                        shared = SharedFile.objects.filter(traceid=doc.trace_id)
+                        shared.update(docname=request.POST['docname']+"_"+str(doc.trace_id)+ext)
+
+                    doc.save()
+                    retmsg = "Success"
             else:
-                notif = "An admin changed the name of <strong>"+getFilename(str(doc.document.name))+"</strong> to <strong>"+ request.POST['docname'].upper() +"</strong><br> <strong> Trace #: "+str(doc.trace_id)+"</strong>"
-                recent = Notification(notification=notif, notified_id=doc.uploader_id, date=getDateTime())
-                recent.save()
-          
-            if SharedFile.objects.filter(traceid=doc.trace_id).count() > 0:
-                  shared = SharedFile.objects.filter(traceid=doc.trace_id)
-                  shared.update(docname=request.POST['docname']+"_"+str(doc.trace_id)+ext)
-
-            doc.save()
-            retmsg = "Success"
+                retmsg = "Document not found"
     else:   
         retmsg = "Something went wrong"
 

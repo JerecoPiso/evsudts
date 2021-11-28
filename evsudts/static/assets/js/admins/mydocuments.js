@@ -620,7 +620,7 @@ var mydocs = Vue.createApp({
                      }
                        ).then(function(response){
                          if(response.data.message == "Success"){
-                           console.log(response.data)
+                          //  console.log(response.data)
                            $("#myModal").modal('hide');
 
          
@@ -684,7 +684,7 @@ var mydocs = Vue.createApp({
                      }
                        ).then(function(response){
                          if(response.data == "Success"){
-                           console.log(response.data)
+                          //  console.log(response.data)
                            $("#sendDoc").modal('hide');
 
          

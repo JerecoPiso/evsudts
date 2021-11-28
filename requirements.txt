@@ -59,8 +59,6 @@ python-multipart==0.0.5
 python-pptx==0.6.21
 PyTweening==1.0.3
 pytz==2020.1
-pywin32==302
-pywinauto==0.6.8
 pyzbar==0.1.8
 qrcode==7.3.1
 requests==2.25.1

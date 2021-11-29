@@ -20,9 +20,6 @@ from django.contrib import messages
 
 listoffolders = []
 
-
-
-
 def download(request, fname):
     BASE_DIR = os.path.join(settings.MEDIA_ROOT, fname)
     if os.path.exists(BASE_DIR):
@@ -287,7 +284,8 @@ def logout(request):
     try:
         del request.session['user_loggin']
         del request.session['username']
-
+        del request.session['id']
+        del request.session['user_role']
     except:
         pass    
 

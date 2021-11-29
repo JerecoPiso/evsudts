@@ -42,12 +42,13 @@ def logout(request):
     try:
         del request.session['user_loggin']
         del request.session['username']
-
+        del request.session['id']
+        del request.session['user_role']
     except:
         pass    
 
     return redirect("/")
-
+    
 def documents(request):
     request.session['title'] = "Documents"
     if request.session.get("user_loggin") == True and request.session.get("user_role") == "Admin":

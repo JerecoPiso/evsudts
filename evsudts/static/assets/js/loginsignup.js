@@ -241,12 +241,10 @@
                                 if(response.data.responseMsg === 'Success'){
                                     // alert(response.data.qrcodename)
                                     swal('Signed up successfully', 'Clicked the OK to continue', "success");
-                                    // signup.responseClass = 'success'
-                                    // signup.responseInfo = 'Signed up successfully'
+
                                     signup.signupInfo = {}
                                 }else{
-                                    // signup.responseClass = 'error'
-                                    // signup.responseInfo = response.data.responseMsg
+
                                     swal({
                                         icon: 'error',
                                         title: 'Oops...',

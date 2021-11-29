@@ -8,7 +8,8 @@ from django.contrib import messages
 from django.db.models import Q
 import os, shutil
 from pathlib import Path
-# from pyzbar.pyzbar import decode
+import cv2
+from pyzbar.pyzbar import decode
 from django.contrib.auth.hashers import make_password, check_password
 from evsudts.models import Documents, SharedFile
 
@@ -22,6 +23,7 @@ def searchDocumentUsingTrace(request):
     department = ''
     retmsg = ''
     uploaded = ''
+    qr = ''
     if Documents.objects.filter(trace_id=request.POST['traceid']).count() > 0:
         doc = Documents.objects.get(trace_id=request.POST['traceid'])
         docname = doc.document.name
@@ -35,6 +37,7 @@ def searchDocumentUsingTrace(request):
         type = doc.type
         department = doc.department
         uploaded = doc.uploaded_at
+        qr = doc.qr_code.name
         
 
     else:
@@ -47,12 +50,14 @@ def searchDocumentUsingTrace(request):
             department = doc.department
             holder = doc.receiver_name
             uploaded = doc.send_on
+            qr = doc.ownqr_code.name
         else:
             retmsg = "None"
-    return JsonResponse({'retmsg': retmsg, 'docname': docname, 'holder': holder, 'traceid': traceid, 'status': status, 'type': type, 'department': department, 'uploaded': uploaded})
+    return JsonResponse({'qr': qr,'retmsg': retmsg, 'docname': docname, 'holder': holder, 'traceid': traceid, 'status': status, 'type': type, 'department': department, 'uploaded': uploaded})
     
 def index(request):
-
+    # dept = Department(department="Engineering Department")
+    # dept.save()
     request.session['title'] = 'Login'
     if request.session.get("user_loggin"):
         if request.session.get("user_role") == "User":
@@ -61,7 +66,13 @@ def index(request):
         else:
             return redirect("/administrator/")
         
+
     else:
+        # pat = os.path.join(os.path.abspath(os.path.join(os.getcwd()+"//media//"+'asdasd')))
+        # os.makedirs(pat)
+        # print(os.getcwd())
+        # return redirect("/")
+        # shutil.move(os.path.join(os.path.abspath(os.path.join(os.getcwd()+"//media//qrcodes//logo.png"))),pat)
 
         return render(request, 'html/index.html')
 

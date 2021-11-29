@@ -53,6 +53,7 @@
                         $("#type").text(response.data.type)
                         $("#depart").text(response.data.department)
                         $("#status").text(response.data.status)
+                        $("#qr").attr('src', "/media/qrcodes/"+response.data.qr)
                         $("#searchResult").modal("show")
 
                     }else{

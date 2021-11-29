@@ -51,10 +51,7 @@ var docs = Vue.createApp({
      },
      methods:{
        rename(){
-         //  var u_score = this.newFilename.lastIndexOf("_")
-         //  alert(this.newFilename.slice(0, u_score))
-         //  this.newFilename = this.newFilename.slice(0, u_score)
-           // alert(this.newFilenameId)
+
            if(this.newFilename == ""){
 
            }else if(this.newFilenameId == ""){
@@ -703,19 +700,13 @@ var docs = Vue.createApp({
                          
                            swal("Send successfully", 'Clicked the OK to continue', "success");
                          
-
                            document.getElementById("filetosend").value = ''
                            docs.sendDocInfo.type = ''
                            docs.sendDocInfo.dept = ''
                            docs.sendDocInfo.comment = ''
                            docs.sendDocInfo.receiver_id = ''
                            
-                          
-                             // $("#sendDoc").modal('hide');
-                          
-                           
-                           
-                     
+        
                          }else{
                                swal({
                                    icon: 'error',

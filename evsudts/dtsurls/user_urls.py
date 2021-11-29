@@ -52,10 +52,4 @@ urlpatterns = [
     url(r'^updatedept', user_views.updateDept, name='Update User Department'),
     url(r'^renamedoc', user_views.renameDoc, name='Rename Document'),
     url(r'^download/(?P<fname>.+)$', user_views.download, name='Download Document'),
-
-    # url(r'^createfolder', user_views.createFolder, name='Create Folder'),
-    # url(r'^uploadfolder', user_views.uploadfolder, name='Upload Folder'),
-    # url(r'^renamefolderorfile', user_views.renameFolderOrFile, name='Rename a Folder or File'),
-    # url(r'^getfolderfiles', user_views.getFolderFiles, name='Get Folder and Files'),
-    # url(r'^deletefolder', user_views.deleteFolder, name='Delete File'),
 ]

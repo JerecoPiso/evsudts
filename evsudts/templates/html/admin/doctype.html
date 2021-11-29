@@ -8,7 +8,7 @@
        {% csrf_token %}
         <div class="container">
             <!-- <h4 class="pl-3 page-title">  | <span class="fa fa-trash"></span> Recycle Bin |</h4> -->
-            <h4 class="pl-3 page-title"> <span class="fa fa-bookmark"></span> Departments <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
+            <h4 class="pl-3 page-title"> <span class="fa fa-bookmark"></span> Document Type <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
             <div class="bg-white p-4 b box-shadow">
                 <button class="btn btn-primary mb-2"  title="Add Document" data-bs-toggle="modal" data-bs-target="#addType"><span class="fa fa-plus"></span> Add</button>
                 <input type="text"  placeholder="Search . . ." v-model="searchval" @keyup="searchType" class="mb-2 form-control" id="search-all-docs">
@@ -17,7 +17,7 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Department</th>
+                        <th>Document Type</th>
                         <th>Action</th>
                       
                     

@@ -52,8 +52,7 @@ def searchDocumentUsingTrace(request):
     return JsonResponse({'retmsg': retmsg, 'docname': docname, 'holder': holder, 'traceid': traceid, 'status': status, 'type': type, 'department': department, 'uploaded': uploaded})
     
 def index(request):
-    # dept = Department(department="Engineering Department")
-    # dept.save()
+
     request.session['title'] = 'Login'
     if request.session.get("user_loggin"):
         if request.session.get("user_role") == "User":
@@ -62,13 +61,7 @@ def index(request):
         else:
             return redirect("/administrator/")
         
-
     else:
-        # pat = os.path.join(os.path.abspath(os.path.join(os.getcwd()+"//media//"+'asdasd')))
-        # os.makedirs(pat)
-        # print(os.getcwd())
-        # return redirect("/")
-        # shutil.move(os.path.join(os.path.abspath(os.path.join(os.getcwd()+"//media//qrcodes//logo.png"))),pat)
 
         return render(request, 'html/index.html')
 

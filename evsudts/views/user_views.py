@@ -17,6 +17,12 @@ from PIL import Image, ImageDraw
 from django.db.models import Q
 from django.contrib import messages
 
+
+listoffolders = []
+
+
+
+
 def download(request, fname):
     BASE_DIR = os.path.join(settings.MEDIA_ROOT, fname)
     if os.path.exists(BASE_DIR):
@@ -191,7 +197,7 @@ def cancelSharedDoc(request):
                 notif = "You cancelled the document that you want to share with <strong> "+share.receiver_name+"</strong>. <br> <strong> Trace #: "+str(share.traceid)+"</strong>"
                 recent = RecentActivities(notification=notif, notified_id=request.session.get("id"), date=getDateTime())
                 
-                notif = Notification.objects.filter(tracenumber=share.traceid)
+                notif = Notification.objects.filter(Q( tracenumber=share.traceid) & Q(notified_id=share.receiver_id))
                 notif.delete()
 
                 recent.save()

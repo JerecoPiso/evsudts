@@ -32,7 +32,8 @@ var docs = Vue.createApp({
            newFilename: '',
            newFilenameId: '',
            status: 'Upload Document',
-           statusSend: 'Send Document'
+           statusSend: 'Send Document',
+           dlBtn: false
           
          }
 
@@ -632,7 +633,7 @@ var docs = Vue.createApp({
                           //  console.log(response.data)
                            $("#myModal").modal('hide');
 
-                           docs.status = "Upload Document"
+                           docs.status = 'Upload Document'
                          
                            swal(response.data.message, 'Clicked the OK to continue', "success");
                          
@@ -697,8 +698,8 @@ var docs = Vue.createApp({
                          if(response.data == "Success"){
                           //  console.log(response.data)
                            $("#sendDoc").modal('hide');
-
                            docs.statusSend = "Send Document"
+         
                          
                            swal("Send successfully", 'Clicked the OK to continue', "success");
                          

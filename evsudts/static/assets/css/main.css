@@ -17,7 +17,8 @@ body{
     display: block;
     width: 250px;
     font-size: 1em;
-    color: rgb(204, 0, 0);
+    /* color: rgb(204, 0, 0); */
+    color: rgb(255,255,255);
     text-decoration: none;
     font-family:  'Arial Narrow Bold', sans-serif;
     text-align: center;
@@ -40,18 +41,31 @@ body{
 }
 .forgot-pass a{
     text-decoration: none;
-    color: rgba(0, 0, 0,0.8);
+    /* color: rgba(0, 0, 0,0.8); */
+    color: rgb(255,255,255);
 }
 .forgot-pass:hover a{
     border-bottom: 1px solid rgb(204, 0, 0);
     color: rgb(204, 0, 0);
 }
 #login, #signup{
-    background-color: rgb(255,255,255);
+    /* background-color: rgb(255,255,255); */
+    background-color: rgba(0, 0, 0,0.5);
+    
     color: rgba(0, 0, 0,0.8);
     border: 1px solid #ccc;
     border-radius: 0.2em;
     padding: 1em 1.5em 1em 1.5em;
+}
+#login .form-input{
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: flex;
+    margin-bottom: 0.5em;
+    margin-top: 0.1em;
+    position: relative;
+    outline: none;
 }
 .form-input{
     width: 100%;
@@ -61,6 +75,22 @@ body{
     margin-bottom: 0.5em;
     margin-top: 0.1em;
     position: relative;
+    outline: none;
+}
+#login .form-input span, #signup .form-input span {
+    font-size: 1.4em;
+    padding: 0.4em;
+    width: 8%;
+    text-align: center;
+    float: left;
+    margin: auto;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-left-radius: 0.2em;
+    /* color: rgb(204, 0, 0); */
+    color: rgb(255,255,255);
+    border-bottom-left-radius: 0.2em;
 }
 .form-input span{
     font-size: 1.4em;
@@ -73,19 +103,61 @@ body{
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     border-top-left-radius: 0.2em;
-    color: rgb(204, 0, 0);
+
+ 
     border-bottom-left-radius: 0.2em;
 }
-.form-input input, select{
+#newpass .form-input input::placeholder, #modal .form-input input::placeholder{
+    color: rgba(0,0,0,0.7);
+}
+#newpass .form-input input, #modal .form-input input{
+    color: rgb(0,0,0);
+}
+#newpass .form-input input:focus, #modal .form-input input:focus{
+    color: rgba(0,0,0,0.7);
+}
+::placeholder{
+    color: rgb(255,255,255);
+}
+#login .form-input input, #signup .form-input input, select{
    width: 92%;
    background-color: transparent;
    border: 1px solid #ccc;
    border-top-right-radius: 0.2em;
    border-bottom-right-radius: 0.2em;
    padding: 5px;
+   color: rgb(255,255,255);
+  
+}
+#login .form-input input:focus, #signup .form-input input:focus{
+    background-color: rgb(255,255,255);
+    color: rgb(0,0,0);
+   
+ }
+#signup select{
+  background: rgb(255,255,255);
+  color: rgb(0,0,0);
+ }
+.form-input input, select{
+    width: 92%;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-top-right-radius: 0.2em;
+    border-bottom-right-radius: 0.2em;
+    padding: 5px;
+    color: rgb(255,255,255);
+ }
+#login label, #signup label{
+    /* color: rgba(0, 0, 0,0.9); */
+    color: rgb(255,255,255);
+    letter-spacing: 1px;
+    font-family:  'Arial Narrow Bold', sans-serif;
+    font-size: 1em;
+    font-weight: 530;
 }
 label{
     color: rgba(0, 0, 0,0.9);
+    
     letter-spacing: 1px;
     font-family:  'Arial Narrow Bold', sans-serif;
     font-size: 1em;
@@ -99,6 +171,7 @@ label{
     font-size: 1em;
     border: none;
     border-radius: 0.2em;
+    box-shadow: 0 1px 4px white;
 }
 .logo{
     width: 90px;
@@ -106,7 +179,7 @@ label{
     margin: -3.5em auto 1em auto;
     display: block;
     border-radius: 50%;
-    box-shadow: 0 0 10px grey;
+    box-shadow: 0 2px 10px grey;
 }
 .modal{
     z-index: 2;
@@ -224,97 +297,101 @@ label{
 }
 
 .modalTitle{
-padding: 0.2em 0.5em 0 0.5em;
-color: rgb(255,255,255);
-font-size: 1.1em;
-/* width: 100%; */
-}
-.modalTitle span{
-float: right;
-font-size: 1.1em;
-cursor: pointer;
+    padding: 0.2em 0.5em 0 0.5em;
+    color: rgb(255,255,255);
+    font-size: 1.1em;
+    /* width: 100%; */
+    }
+    .modalTitle span{
+    float: right;
+    font-size: 1.1em;
+    cursor: pointer;
 
 }
 
 .checkbox {
-display: block;
-position: relative;
-padding-left: 30px;
-margin-bottom: 5px;
-margin-top: 10px;
-cursor: pointer;
-font-size: 16px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 
-user-select: none;
+    user-select: none;
 
 }
 
 /* Hide the browser's default checkbox */
 .checkbox input {
-position: absolute;
+    position: absolute;
 
-opacity: 0;   
-cursor: pointer;
-height: 0;
-width: 0;
+    opacity: 0;   
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }
 
 /* Create a custom checkbox */
 .checkmark {
-position: absolute;
-top: 0;
-left: 0;
-height: 20px;
-margin-top: -2px;
-width: 20px;
-background-color: #eee;
-border: 1px solid #8fb3b7;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    margin-top: -2px;
+    width: 20px;
+    background-color: #eee;
+    border: 1px solid #8fb3b7;
 
-border-radius: 0.3em;
+    border-radius: 0.3em;
 }
 
 
 /* On mouse-over, add a grey background color */
 .checkbox:hover input ~ .checkmark {
-background-color: #ccc;
+    background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
 .checkbox input:checked ~ .checkmark {
-background-color: #2196F3;
+    background-color: #2196F3;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-content: "";
-position: absolute;
-display: none;
+    content: "";
+    position: absolute;
+    display: none;
 }
 
 /* Show the checkmark when checked */
 .checkbox input:checked ~ .checkmark:after {
-display: block;
+    display: block;
 }
 
 /* Style the checkmark/indicator */
 .checkbox .checkmark:after {
-left: 6px;
-top: 1px;
-width: 5px;
-height: 10px;
-border: solid white;
-border-width: 0 3px 3px 0;
--webkit-transform: rotate(45deg);
--ms-transform: rotate(45deg);
-transform: rotate(45deg);
+    left: 6px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 @media screen and (max-width: 768px){
-    #login, #signup{
+    #login{
         width: 80%;
         margin: 7em auto auto auto;
+    }
+    #signup{
+        width: 80%;
+        margin: 5em auto auto auto;
     }
     .modalDialog{
         width: 95%;
@@ -325,9 +402,13 @@ transform: rotate(45deg);
     }
 }
 @media screen and (min-width: 769px) and (max-width: 991px){
-    #login, #signup{
+    #login{
         width: 350px;
         margin: 7em auto auto auto;
+    }
+    #signup{
+        width: 350px;
+        margin: 6em auto auto auto;
     }
     .modalDialog{
         width: 60%;
@@ -338,9 +419,13 @@ transform: rotate(45deg);
     }
 }
 @media screen and (min-width: 992px) and (max-width: 1399px){
-    #login, #signup{
+    #login{
         width: 350px;
-        margin: 7em auto auto auto;  
+        margin: 11em auto auto auto;  
+    }
+    #signup{
+        width: 350px;
+        margin: 8em auto auto auto;  
     }
     .modalDialog{
         width: 35%;
@@ -352,7 +437,7 @@ transform: rotate(45deg);
 }
 @media screen and (min-width: 1400px){
     #login, #signup{ 
-        margin: 10em auto auto auto;
+        margin: 13em auto auto auto;
     }
     .modalDialog{
         width: 35%;

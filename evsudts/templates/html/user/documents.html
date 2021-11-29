@@ -487,7 +487,7 @@
                             <p class="reg-size docinfo" ><b>Status:</b> [docResponseInfo.status]</p>
                             <p class="reg-size docinfo" v-if="docResponseInfo.sender"><b>Sender:</b> [docResponseInfo.sender]</p>
                             <p class="reg-size docinfo" v-if="docResponseInfo.comment"><b>Comment:</b> <br> [docResponseInfo.comment]</p>
-                            <button class="btn btn-primary docinfo" @click="downloadDoc(docResponseInfo.docname)">Download Document</button>
+                            <button v-if="dlBtn == true || docResponseInfo.status == 'Approved'" class="btn btn-primary docinfo" @click="downloadDoc(docResponseInfo.docname)">Download Document</button>
                         </div>
                 
                         <!-- Modal footer -->
@@ -585,7 +585,7 @@
                                
                             
                                 <div class="d-grid mt-2">
-                                    <button type="submit" class="btn-add btn btn-primary p-2">Add Comment</button>
+                                    <button type="submit" class="btn-add btn btn-primary p-2">[status]</button>
                                 </div>
                             </form>
                            

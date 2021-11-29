@@ -17,9 +17,6 @@ from PIL import Image, ImageDraw
 from django.db.models import Q
 from django.contrib import messages
 
-
-listoffolders = []
-
 def download(request, fname):
     BASE_DIR = os.path.join(settings.MEDIA_ROOT, fname)
     if os.path.exists(BASE_DIR):
@@ -284,8 +281,7 @@ def logout(request):
     try:
         del request.session['user_loggin']
         del request.session['username']
-        del request.session['id']
-        del request.session['user_role']
+
     except:
         pass    
 
@@ -384,7 +380,7 @@ def approvedDoc(request):
             recent.save()
             shared.received_on = getDateTime()
             
-            noti = Notification.objects.get(tracenumber=shared.traceid)
+            noti = Notification.objects.get(Q(notified_id=shared.receiver_id) & Q(tracenumber=shared.traceid))
             noti.delete()
         
             shared.save()
@@ -410,7 +406,7 @@ def approvedDocViaNotification(request, notifid, sharedfileid):
             recent = RecentActivities(notification=notif_txt2,notified_id=shared.receiver_id,date=getDateTime())
             recent.save()
             shared.received_on = getDateTime()
-            noti = Notification.objects.get(tracenumber=shared.traceid)
+            noti = Notification.objects.get(id=notifid)
             noti.delete()
             shared.save()
             messages.success(request, 'Document approved successfully')
@@ -726,6 +722,7 @@ def renameDoc(request):
                     retmsg = "Success"
             else:
                 retmsg = "Document not found"
+
     else:   
         retmsg = "Something went wrong"
 

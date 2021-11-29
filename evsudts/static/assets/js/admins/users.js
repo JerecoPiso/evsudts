@@ -154,8 +154,7 @@ var users = Vue.createApp({
              pass = this.signupInfo.password
              pass2 = this.signupInfo.password2
              hint = this.signupInfo.hint
-             dept = "Sdf"
-             // this.signupInfo.dept
+             dept = this.signupInfo.dept
              role = this.signupInfo.role
              
              if(uname == ""){

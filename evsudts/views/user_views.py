@@ -784,8 +784,8 @@ def sendfile(request):
                 
                     
                     traceid = str(random.randint(1,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))
-                    while Documents.objects.filter(trace_id=traceid).count() > 0:
-                         traceid = str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))
+                    # # while Documents.objects.filter(trace_id=traceid).count() > 0:
+                    #      traceid = str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))
                     
                     qrcode_img = qrcode.make(traceid)
                     canvas = Image.new('RGB', (290,290), 'white')

@@ -225,7 +225,7 @@ var users = Vue.createApp({
                              swal('Signed up successfully', 'Clicked the OK to continue', "success");
                              // signup.responseClass = 'success'
                              // signup.responseInfo = 'Signed up successfully'
-                             users.getUsers()
+                             // users.getUsers()
                              users.signupInfo = {}
                              $("#addUser").modal("hide")
                          }else{

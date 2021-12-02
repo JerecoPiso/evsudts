@@ -66,7 +66,6 @@ class SharedFile(models.Model):
         ownqr_code = models.ImageField(upload_to='qrcodes/',)
 
 class RecentActivities(models.Model):
-
         notification = models.TextField()
         notified_id = models.IntegerField()
         date = models.CharField(max_length=100)

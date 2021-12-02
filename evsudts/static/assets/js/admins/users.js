@@ -18,8 +18,8 @@ var users = Vue.createApp({
         }
     },
     mounted: function(){    
-            // this.getDept()
-            // this.getUsers()
+            this.getDept()
+            this.getUsers()
             setInterval(time,1000)
          //    getDepartments()
     },
@@ -154,8 +154,7 @@ var users = Vue.createApp({
              pass = this.signupInfo.password
              pass2 = this.signupInfo.password2
              hint = this.signupInfo.hint
-             dept = "Asd"
-             // this.signupInfo.dept
+             dept = this.signupInfo.dept
              role = this.signupInfo.role
              
              if(uname == ""){
@@ -225,7 +224,7 @@ var users = Vue.createApp({
                              swal('Signed up successfully', 'Clicked the OK to continue', "success");
                              // signup.responseClass = 'success'
                              // signup.responseInfo = 'Signed up successfully'
-                             // users.getUsers()
+                             users.getUsers()
                              users.signupInfo = {}
                              $("#addUser").modal("hide")
                          }else{
@@ -282,7 +281,7 @@ var users = Vue.createApp({
                          users.usersList = response.data
                   }
             }).catch(function(err){
-                // alert("df")
+                alert("df")
             })
         },
         searchUser: function(){

@@ -21,7 +21,7 @@
             }
         },
         mounted(){
-            // this.getUserInfo()
+            this.getUserInfo()
             setInterval(time,1000)
         },
         methods:{

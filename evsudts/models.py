@@ -75,7 +75,7 @@ class Notification(models.Model):
         notification = models.TextField()
         notified_id = models.IntegerField()
         date = models.CharField(max_length=100)
-        tracenumber = models.IntegerField(default=0)
+        tracenumber = models.BigIntegerField(default=0)
       
 
 class DocType(models.Model):

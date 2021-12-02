@@ -813,13 +813,13 @@ def sendfile(request):
 
                     recent = Notification(notification="None", notified_id=request.POST['receiver_id'], date=datetimenow, tracenumber=traceid)
                     recent.save()
-                    # last_id = Notification.objects.latest('id')
-                    # notification = "<strong>"+ request.session.get("username") + "</strong> wants to share a document <strong> (" + getFilename(os.path.splitext(uploaded_file.name)[0]+"_"+str(traceid)+os.path.splitext(uploaded_file.name)[1]) +")</strong> to you <br> <a href='/user/approvedvianotification/"+str(last_id.id)+"/"+str(last_shared_id.id)+"'>Click here to approved</a> <br> <a href='/user/rejectvianotification/"+str(last_id.id)+"/"+str(last_shared_id.id)+"'>Click here to reject</a>"
+                    last_id = Notification.objects.latest('id')
+                    notification = "<strong>"+ request.session.get("username") + "</strong> wants to share a document <strong> (" + getFilename(os.path.splitext(uploaded_file.name)[0]+"_"+str(traceid)+os.path.splitext(uploaded_file.name)[1]) +")</strong> to you <br> <a href='/user/approvedvianotification/"+str(last_id.id)+"/"+str(last_shared_id.id)+"'>Click here to approved</a> <br> <a href='/user/rejectvianotification/"+str(last_id.id)+"/"+str(last_shared_id.id)+"'>Click here to reject</a>"
                     
                     
-                    # lastnotif = Notification.objects.get(Q(notified_id=request.POST['receiver_id']) & Q(tracenumber=traceid))
-                    # lastnotif.notification = notification
-                    # lastnotif.save()
+                    lastnotif = Notification.objects.get(Q(notified_id=request.POST['receiver_id']) & Q(tracenumber=traceid))
+                    lastnotif.notification = notification
+                    lastnotif.save()
                     ret_msg = "Success"
        
     else:

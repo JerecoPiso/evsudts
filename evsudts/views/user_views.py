@@ -426,7 +426,7 @@ def approvedAllPendingDocs(request):
     retmsg = ""
    
     try:
-        shared = SharedFile.objects.filter(status="Pending")
+        shared = SharedFile.objects.filter(Q(receiver_id=request.session.get("id")) & Q(status="Pending"))
         if shared.count() > 0:
             for share in shared:
                 notif_txt = "<strong>"+share.receiver_name + "</strong> accept the document <strong>" + getFilename(os.path.splitext(share.docname)[0])  +'</strong> that you shared with him. <br> <strong> Trace #: '+str(share.traceid)+"</strong>"

@@ -18,8 +18,8 @@ var users = Vue.createApp({
         }
     },
     mounted: function(){    
-            this.getDept()
-            this.getUsers()
+            // this.getDept()
+            // this.getUsers()
             setInterval(time,1000)
          //    getDepartments()
     },
@@ -282,7 +282,7 @@ var users = Vue.createApp({
                          users.usersList = response.data
                   }
             }).catch(function(err){
-                alert("df")
+                // alert("df")
             })
         },
         searchUser: function(){

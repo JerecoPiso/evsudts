@@ -9,7 +9,7 @@
         <div class="container">
             <!-- <h4 class="pl-3 page-title">  | <span class="fa fa-trash"></span> Recycle Bin |</h4> -->
             <h4 class="pl-3 page-title"> <span class="fa fa-folder-open"></span> Documents <p  class="pull-right datetime"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
-            <p class="mb-2 table-title"><span class="blue fa fa-thumbs-up"></span> Approved Documents</p>
+            <p class="mb-2 table-title"><span class="blue fa fa-thumbs-down"></span> Approved Documents</p>
             <div class="bg-white p-4 b box-shadow">
                 <button class="btn btn-primary mb-2"  title="Add Document" data-bs-toggle="modal" data-bs-target="#addDoc"><span class="fa fa-plus"></span> Add</button>
                 <input type="text"  placeholder="Search . . ." v-model="filterApprovedDocs" @keyup="searchApprovedDocs" class="mb-2 form-control" id="search-all-docs">
@@ -291,9 +291,7 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-                            
+                      
                                 <div class="d-grid mt-2">
                                     <button type="submit" class="btn-add btn btn-primary p-2" >[status]</button>
                                 </div>
@@ -326,7 +324,7 @@
                                 <img :src="'/media/qrcodes/'+docResponseInfo.qrcode"  class="qrimage" alt="">
                                 <!-- <img src="/media/qrcodes/1000001.png" style="" alt=""> -->
                                 <!-- [docResponseInfo.docname] -->
-                                <p class="reg-size docinfo"><b>Document Name:</b> [getDocName(docResponseInfo.docname)]</p>
+                                <p class="reg-size docinfo text-break"><b>Document Name:</b> [getDocName(docResponseInfo.docname)]</p>
                                 <p class="reg-size docinfo"><b>Trace ID:</b>  [docResponseInfo.traceid]</p>
                                 <p class="reg-size docinfo"><b>Department:</b> [docResponseInfo.dept]</p>
                                 <p class="reg-size docinfo"><b>Type:</b> [docResponseInfo.type]</p>
@@ -335,7 +333,7 @@
                                 <p class="reg-size docinfo" ><b>Status:</b> [docResponseInfo.status]</p>
                                 <p class="reg-size docinfo" v-if="docResponseInfo.sender"><b>Sender:</b> [docResponseInfo.sender]</p>
                                 <p class="reg-size docinfo" v-if="docResponseInfo.comment"><b>Comment:</b> <br> [docResponseInfo.comment]</p>
-                                <button class="btn btn-primary docinfo" @click="downloadDoc(docResponseInfo.docname)">Download Document</button>
+                                <button v-if="dlBtn == true || docResponseInfo.status == 'Approved'" class="btn btn-primary docinfo" @click="downloadDoc(docResponseInfo.docname)">Download Document</button>
                             </div>
                     
                             <!-- Modal footer -->

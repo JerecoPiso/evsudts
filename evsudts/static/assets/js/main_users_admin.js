@@ -132,5 +132,8 @@
       $(document).ready(function(){
         $("#download-doc").click(function(){
           window.location.href="/user/download/"+$(this).val()
+          $(".top-name").click(function(){
+            window.location.href="/"+$(this).data('role')+"/"+"settings"
+          })
         })
   })

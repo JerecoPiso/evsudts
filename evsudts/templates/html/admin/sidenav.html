@@ -1,6 +1,7 @@
 <header class="header" id="header">
 
     <div class="header_toggle" > <i class='bx bx-menu'  id="header-toggle" style="color: rgb(255,255,255);"></i> </div>
+
        <form @submit.prevent="search()" class="input-group search">
 
             {% csrf_token %}
@@ -8,6 +9,8 @@
             <span class="fa fa-search btn btn-success" @click="search()"></span>
 
         </form>
+
+        <span class="top-name">[username]</span>
     <div class="header_img"> <img :src="'/media/'+photo" alt=""> </div>
     <!-- The Modal -->
 
@@ -34,7 +37,7 @@
 </div>
 
 
-<div class="modal fade" id="searchResult">
+<div class="modal" id="searchResult">
     <div class="modal-dialog">
         <div class="modal-content">
     
@@ -45,17 +48,17 @@
             </div>
     
             <!-- Modal body -->
-            <div class="modal-body pl-4 pr-4 pt-1">
-                  <img src="" id="qr"  class="qrimage" alt="" style="margin-left: -15px">
-                   <p class="mt-3"><strong>Docname: </strong><span id="docname"></span></p> 
-                   <p><strong>Trace #: </strong><span id="traceid"></span></p> 
-                   <p><strong>Uploaded On: </strong><span id="uploaded"></span></p> 
-                   <p><strong>Holder: </strong><span id="holder"></span></p> 
-                   <p><strong>Type: </strong><span id="type"></span></p> 
-                   <p><strong>Department: </strong><span id="depart"></span></p> 
-                   <p><strong>Status: </strong><span id="status"></span></p> 
-                  
-
+            <div class="modal-body pl-3 pr-4 pt-1">
+                <img src="" id="qr"  class="qrimage" alt="">
+                <p class="mt-3 reg-size docinfo text-break"><strong>Docname: </strong><span id="docname"></span></p> 
+                <p class="reg-size docinfo" ><strong>Trace #: </strong><span id="traceid"></span></p> 
+                <p class="reg-size docinfo"><strong>Uploaded On: </strong><span id="uploaded"></span></p> 
+                <p class="reg-size docinfo" id="holder"></p> 
+                <p class="reg-size docinfo"><strong>Type: </strong><span id="type"></span></p> 
+                <p class="reg-size docinfo"><strong>Department: </strong><span id="depart"></span></p> 
+                <p class="reg-size docinfo"><strong>Status: </strong><span id="status"></span></p> 
+                <button type="button" class="btn btn-primary docinfo mb-4" value="" id="download-doc">Download Document</button>
+               
             </div>
         </div>
         </div>

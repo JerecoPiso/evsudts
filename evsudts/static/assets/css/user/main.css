@@ -239,7 +239,10 @@ a {
     left: 0
 }
 .search{
-    width: 40%;align-items: center;height: auto;
+    width: 40%;
+    /* left: -17%; */
+    height: auto;
+ 
 }
 .search span{
     height: 38px;padding-top: 0.6em;
@@ -265,7 +268,8 @@ a {
     height: 100vh
 }
 .qrimage{
-    height: 120px;width: 150px;
+    height: 120px;
+    width: 150px;
 }
 
 .show-entries{
@@ -292,6 +296,19 @@ a {
     }
     .datetime{
         display: none;
+    }
+    .search{
+       
+        left: -15%;
+  
+     
+    }
+    .top-name{
+        position: fixed;
+        right: 4em;
+        font-size: 1em;
+        font-weight: 600;
+        color: rgb(255,255,255);
     }
 }
 @media screen and (min-width: 768px) {
@@ -329,6 +346,18 @@ a {
 
     .body-pd {
         padding-left: calc(var(--nav-width) + 188px)
+    }
+    .search{
+      
+        left: -7%;
+      
+    }
+    .top-name{
+        position: fixed;
+        right: 4em;
+        font-size: 1.4em;
+        color: rgb(255,255,255);
+        font-weight: 600;
     }
 }
 .center {

@@ -17,7 +17,8 @@
         data(){
             return{
                 searchvalue: '',
-                photo: ''
+                photo: '',
+                username: ''
             }
         },
         mounted(){
@@ -33,6 +34,8 @@
                 axios.get("/user/getuserinfo").then(function(response){
               
                   searchDoc.photo = response.data.photo
+                  searchDoc.username = response.data.username
+     
            
                   // alert(response.data.username)
                 }).catch(function(err){
@@ -49,12 +52,13 @@
                         $("#docname").text(searchDoc.getDocName(response.data.docname))
                         $("#traceid").text(response.data.traceid)
                         $("#uploaded").text(response.data.uploaded)
-                        $("#holder").text(response.data.holder)
+                        $("#holder").html(response.data.holder)
                         $("#type").text(response.data.type)
                         $("#depart").text(response.data.department)
                         $("#status").text(response.data.status)
                         $("#qr").attr('src', "/media/qrcodes/"+response.data.qr)
                         $("#searchResult").modal("show")
+                        $("#download-doc").val(response.data.docname)
 
                     }else{
                         swal({
@@ -110,9 +114,8 @@
     linkColor.forEach(l=> l.addEventListener('click', colorLink))
     
     // Your code to run since DOM is loaded and ready
-    // Your code to run since DOM is loaded and ready
     document.onreadystatechange = function() {
-    
+	
         if (document.readyState !== "complete") {
             document.querySelector(
               "body").style.display = "none";
@@ -126,3 +129,8 @@
               "body").style.display = "block";
         }
       };
+      $(document).ready(function(){
+        $("#download-doc").click(function(){
+          window.location.href="/user/download/"+$(this).val()
+        })
+  })

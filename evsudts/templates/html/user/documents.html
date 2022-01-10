@@ -6,7 +6,7 @@
   
 <div class="container height-100 pt-3" id="docs">
     <h4 class="pl-3 page-title"> <span class="fa fa-folder-open"></span> Documents  <p class="datetime pull-right"><i class="fa fa-calendar"></i> <span id="date"> </span> <i class="fa fa-clock"></i> <span id="time"></span></p></h4>
-    <button class="btn btn-primary mt-2 mb-3" @click="getPendingSharedDocs()"><span class=" fa fa-share-square"></span> Pending Shared Documents</button>    
+    <button class="btn btn-primary mt-2 mb-3" @click="getPendingSharedDocs()"><span class="	fa fa-share-square"></span> Pending Shared Documents</button>    
     <h3 class="table-title"> <span class="blue fa fa-briefcase"></span>  All Documents</h3>
         <div class="bg-white p-4 b box-shadow">
             <button class="btn btn-primary mb-2"  title="Add Document" data-bs-toggle="modal" data-bs-target="#myModal"><span class="fa fa-plus"></span> Add</button>
@@ -49,13 +49,13 @@
                 </table>
                 <p v-if="documents.length == 0" class="text-center alert">No Data Available</p>
                 <b class="show-entries">Show</b>
-                    <select v-model="docsToShowCtr"  class="totalToShow">
-                        <option v-for="toShow in limitToShow"  :value="toShow">[toShow]</option>
-                        
-                    </select>
-                    <b class="entries">Entries 
-                    
-                </b>
+					<select v-model="docsToShowCtr"  class="totalToShow">
+						<option v-for="toShow in limitToShow"  :value="toShow">[toShow]</option>
+						
+					</select>
+					<b class="entries">Entries 
+					
+				</b>
             </div>
         </div>
         
@@ -478,7 +478,7 @@
                             <img :src="'/media/qrcodes/'+docResponseInfo.qrcode"  class="qrimage" alt="">
                             <!-- <img src="/media/qrcodes/1000001.png" style="" alt=""> -->
                             <!-- [docResponseInfo.docname] -->
-                            <p class="reg-size docinfo"><b>Document Name:</b> [getDocName(docResponseInfo.docname)]</p>
+                            <p class="reg-size docinfo text-break"><b>Document Name:</b> [getDocName(docResponseInfo.docname)]</p>
                             <p class="reg-size docinfo"><b>Trace ID:</b>  [docResponseInfo.traceid]</p>
                             <p class="reg-size docinfo"><b>Department:</b> [docResponseInfo.dept]</p>
                             <p class="reg-size docinfo"><b>Type:</b> [docResponseInfo.type]</p>

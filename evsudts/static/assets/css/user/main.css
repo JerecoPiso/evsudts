@@ -290,6 +290,9 @@ a {
 .wordbreak{
     word-break: break-all;
 }
+.top-name{
+    cursor: pointer;
+}
 @media screen and (max-width: 767px) {
     #search-all-docs, #search-all-received-docs, #search-all-shared-docs, #search-all-removed-docs{
         float: right;width: 100%;
